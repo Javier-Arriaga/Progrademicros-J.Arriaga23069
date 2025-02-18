@@ -1,141 +1,148 @@
-; Laboratorio 2.asm
-;Implementacion del timero y display de segmentos
+;***********************************************************
+;Universidad del Valle de Guatemala
+;IE023: Programacion de microcontroladores
 ;
-; Created: 11/02/2025 09:35:22
-; Author : JavieR Arriaga
+; Created: 4/02/2025 12:21:02
+; Author : Javier Arriaga
+;Proyecto: Lab1 Javier Arriaga.asm
+;***********************************
 
-.include "M328PDEF.inc"     // Include definitions specific to ATMega328P
 .cseg
-.org 0x0000
-.def    COUNTER = R20
-.def    DISPLAY_VALUE = R21
-.def    SECONDS_COUNTER = R22
-.def    LED_STATE = R23
+.org    0x0000
 
-/****************************************/
+// Configuracion de oscilador de 1MHz
+LDI R16, 0x00
+OUT CLKPR, R16
+
 // Configuración de la pila
 LDI     R16, LOW(RAMEND)
-OUT     SPL, R16
+OUT     SPL, R16        // Cargar 0xff a SPL
 LDI     R16, HIGH(RAMEND)
-OUT     SPH, R16
+OUT     SPH, R16        // Cargar 0x08 a SPH
 
-/****************************************/
-// Configuración MCU
+// Configuración de los contadores
 SETUP:
-    // Configurar Prescaler "Principal"
-    LDI     R16, (1 << CLKPCE)
-    STS     CLKPR, R16          // Habilitar cambio de PRESCALER
-    LDI     R16, 0b000000100
-    STS     CLKPR, R16          
+    // Configuración puerto D como entrada con pull-ups habilitados (Botones en PD2, PD3, PD4, PD5)
+    LDI     R16, 0x00
+    OUT     DDRD, R16   
+    LDI     R16, 0xFF
+    OUT     PORTD, R16  
 
-    // Inicializar timer0
-    CALL    INIT_TMR0
-
-    // Configurar PB0-PB3 como salida para el contador
-    LDI     R16, 0x0F           // Configurar PB0-PB3 como salidas
-    OUT     DDRB, R16
-    LDI     R16, 0x00           // Asegurar que los LEDs inicien apagados
-    OUT     PORTB, R16
-
-    // Salida PD0-PD7 para el display de 7 segmentos
-    LDI     R17, 0xFF
-    OUT     DDRD, R17
-    LDI     R17, 0x3F
-    OUT     PORTD, R17
-
-    // Configurar botones en PC0 y PC1 como entrada con pull-ups activados
-    LDI     R17, 0x00
-    OUT     DDRC, R17   
-    LDI     R18, 0xFF
-    OUT     PORTC, R18  
-
-    CLR     DISPLAY_VALUE       // Inicializar DISPLAY_VALUE en 0
-    CLR     SECONDS_COUNTER     // Inicializar SECONDS_COUNTER en 0
-    CLR     LED_STATE           // Inicializar LED_STATE en 0
-
-/****************************************/
-// Loop Infinito
-MAIN_LOOP:
-    IN      R16, TIFR0          // Leer registro de interrupción de TIMER 0
-    SBRS    R16, TOV0           // Salta si el bit 0 está "set" (TOV0 bit)
-    RJMP    MAIN_LOOP           // Reiniciar loop
-    SBI     TIFR0, TOV0         // Limpiar bandera de "overflow"
-    LDI     R16, 100            
-    OUT     TCNT0, R16          // Volver a cargar valor inicial en TCNT0
+    // Configuración del puerto C como salida para LEDs (Contador en PC0-PC3)
+    LDI     R16, 0x0F
+    OUT     DDRC, R16   
+    LDI     R16, 0x00   // Inicialmente apagados
+    OUT     PORTC, R16  
     
-    INC     COUNTER             // Incrementar contador binario
-    ANDI    COUNTER, 0x0F       // Mantenerlo en el rango de 0-15
-    OUT     PORTB, COUNTER      // Mostrar el valor en PB0-PB3
+    LDI     R17, 0xFF   // Estado previo de botones
+    CLR     R18         // Registro para almacenar el valor del contador
 
-    // Incrementar el contador de segundos cada 10 ciclos (1 segundo)
-    INC     SECONDS_COUNTER
-    CPI     SECONDS_COUNTER, 10
-    BRNE    NO_SECOND
-    CLR     SECONDS_COUNTER     // Reiniciar contador de segundos
-    CALL    CHECK_LED           // Verificar si se debe cambiar el estado del LED
+	// Configuración del puerto B como salida para LEDs (Contador 2 en PB1-PB4)
+    LDI     R16, 0x0F   // Configurar PB1-PB4 como salida
+	OUT     DDRB, R16   
+    LDI     R16, 0x00   // Inicialmente apagados
+    OUT     PORTB, R16  
+    
+    LDI     R17, 0xFF   // Estado previo de botones
+    CLR     R18         // Registro para almacenar el valor del contador 1
+    CLR     R19         // Registro para almacenar el valor del contador 2
 
-NO_SECOND:
-    IN      R17, PINC          // Leer estado de botones
-    SBIC    PINC, 0            // Verificar si el botón de incremento (PC0) está presionado
-    CALL    BOTON_INCREMENTO
-    SBIC    PINC, 1            // Verificar si el botón de decremento (PC1) está presionado
-    CALL    BOTON_DECREMENTO
-    RJMP    MAIN_LOOP          // Repetir el ciclo
+	//Configuracion del puerto B
+	LDI		R16, 0x1F
+	OUT		DDRB, R10
+	LDI		R16, 0x00
+	OUT		PORTB, R16
 
-BOTON_INCREMENTO:
-    CALL    DELAY               // Antirrebote
-    INC     DISPLAY_VALUE
-    ANDI    DISPLAY_VALUE, 0x0F  // Mantenerlo en rango de 0-15
-    CALL    ACTUALIZAR_DISPLAY
+	LDI R17, 0xFF
+	CLR R18
+	CLR R19
+
+// Loop principal
+LOOP:
+    IN      R16, PIND   // Leer puerto D a 0ms
+    CP      R17, R16
+    BREQ    LOOP
+    CALL    DELAY       // Antirrebote
+    IN      R16, PIND   
+    CP      R17, R16
+    BREQ    LOOP
+    CALL    DELAY       // Antirrebote
+    MOV     R17, R16    
+
+    SBRC    R16, 2      // Si el botón de incremento del contador 1 está presionado, salta
+    RJMP    CHECK_DEC1
+    CALL    INCREMENTO1  // Suma al contador 1
+
+CHECK_DEC1:
+    SBRC    R16, 3      // Si el botón de decremento del contador 1 está presionado, salta
+    RJMP    CHECK_INC2
+    CALL    DECREMENTO1  // Resta al contador 1
+
+CHECK_INC2:
+    SBRC    R16, 4      // Si el botón de incremento del contador 2 está presionado, salta
+    RJMP    CHECK_DEC2
+    CALL    INCREMENTO2  // Suma al contador 2
+
+CHECK_DEC2:
+    SBRC    R16, 5      // Si el botón de decremento del contador 2 está presionado, salta
+    RJMP    LOOP
+    CALL    DECREMENTO2  // Resta al contador 2
+    RJMP    LOOP  
+
+// Subrutinas
+INCREMENTO1:
+    LDI     R17, 0x0F   // Máscara para limitar a 4 bits
+    INC     R18         // Incrementar contador 1
+    AND     R18, R17    // Limitar a 4 bits
+    OUT     PORTC, R18  // Mostrar valor en los LEDs del contador 1
     RET
 
-BOTON_DECREMENTO:
-    CALL    DELAY               // Antirrebote
-    DEC     DISPLAY_VALUE
-    CALL    ACTUALIZAR_DISPLAY
+DECREMENTO1:
+    LDI     R17, 0x0F   // Máscara para limitar a 4 bits
+    DEC     R18         // Decrementar contador 1
+    AND     R18, R17    // Limitar a 4 bits
+    OUT     PORTC, R18  // Mostrar valor en los LEDs del contador 1
     RET
 
-ACTUALIZAR_DISPLAY:
-    LDI     ZL, LOW(TABLA<<1)
-    LDI     ZH, HIGH(TABLA<<1)
-    MOV     R16, DISPLAY_VALUE   // Usar DISPLAY_VALUE en lugar de COUNTER
-    ADD     ZL, R16             // Ajustar la dirección en la tabla
-    LPM     R17, Z              // Leer el valor correspondiente
-    OUT     PORTD, R17          // Mostrarlo en el display
+INCREMENTO2:
+    LDI     R17, 0x0F   // Máscara para limitar a 4 bits
+    INC     R19         // Incrementar contador 2
+    AND     R19, R17    // Limitar a 4 bits
+    OUT     PORTB, R19  // Mostrar valor en los LEDs del contador 2
     RET
 
-CHECK_LED:
-    CP      DISPLAY_VALUE, COUNTER  // Comparar DISPLAY_VALUE con COUNTER
-    BRNE    NO_LED_CHANGE           // Si no son iguales, no cambiar el LED
-    COM     LED_STATE               // Cambiar el estado del LED
-    OUT     PORTB, LED_STATE        // Mostrar el nuevo estado del LED
-    CLR     COUNTER                 // Reiniciar el contador de segundos
-
-NO_LED_CHANGE:
+DECREMENTO2:
+    LDI     R17, 0x0F   // Máscara para limitar a 4 bits
+    DEC     R19         // Decrementar contador 2
+    AND     R19, R17    // Limitar a 4 bits
+    OUT     PORTB, R19  // Mostrar valor en los LEDs del contador 2
     RET
 
-// Tabla de valores del display
-TABLA:
-    .DB 0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07 
-    .DB 0x7F,0x6F,0x77,0x7C,0x39,0x5E,0x79,0x71
+SUM_CONTADORES:			
+	ADD R20, R18		//Se carga el valor del contador 1 al registro 20
+	ADD R20, R19		//Se carga el valor del contador 2 al registro 20
+	LDI R17, 0x0F
+	AND R20, R17
+	OUT PORTB, R20
+	BRCC SIN_CARRY		//Se realiza la suma si no hay carry
+	SBI PORTB , 4		//Se carga alos LEDs
+	RJMP SALIR_SUM		//Saltamos al proceso de salir de la suma
 
-/****************************************/
-// Subrutinas de no interrupción
-INIT_TMR0:
-    LDI     R16, (1<<CS01) | (1<<CS00)  // Prescaler de 64
-    OUT     TCCR0B, R16         // Setear prescaler del TIMER 0 a 64
-    LDI     R16, 100            
-    OUT     TCNT0, R16          // Cargar valor inicial en TCNT0
-    RET
+SIN_CARRY:
+	CBI PORTB, 4
 
-DELAY:      // Implementación del delay para evitar rebote
-    LDI     R22, 250
+SALIR_SUM:
+	RET
+
+DELAY:		//Se implemntan los delay al codigo para evitar el antirrebote
+    LDI     R20, 0
 SUBDELAY1:
-    DEC     R22
+    INC     R20
+    CPI     R20, 0
     BRNE    SUBDELAY1
-    LDI     R22, 250  // Aumentar la duración del delay
+    LDI     R20, 0
 SUBDELAY2:
-    DEC     R22
+    INC     R20
+    CPI     R20, 0
     BRNE    SUBDELAY2
     RET
-
