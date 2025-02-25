@@ -13,7 +13,7 @@ counter: .byte 1          ; Contador binario de 4 bits
 
 .cseg
 .org 0x0000
-    rjmp RESET
+    rjmp SETUP
 .org PCI1addr
     rjmp INTERRUPCION
 .org OVF0addr
@@ -27,7 +27,7 @@ counter: .byte 1          ; Contador binario de 4 bits
 ;--------------------------------------------------------------------------------------------------------------------------------------
 
 
-RESET:
+SETUP:
     CLI		; Deshabilita las interrupciones
 
     // Configuración de pila (Stack)
