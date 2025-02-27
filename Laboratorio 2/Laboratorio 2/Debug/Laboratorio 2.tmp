@@ -1,0 +1,40 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc</FILE>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\M328PDEF.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\Debug\Laboratorio 2.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Laboratorio 2.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Laboratorio 2.map</FILE>
+  <FILE>Laboratorio 2.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <SETUP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>24</LINE></SETUP>
+  <INIT_TMR0><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>124</LINE></INIT_TMR0>
+  <MAIN_LOOP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>58</LINE></MAIN_LOOP>
+  <NO_SECOND><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>77</LINE></NO_SECOND>
+  <CHECK_LED><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>107</LINE></CHECK_LED>
+  <BOTON_INCREMENTO><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>85</LINE></BOTON_INCREMENTO>
+  <BOTON_DECREMENTO><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>92</LINE></BOTON_DECREMENTO>
+  <DELAY><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>131</LINE></DELAY>
+  <ACTUALIZAR_DISPLAY><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>98</LINE></ACTUALIZAR_DISPLAY>
+  <TABLA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>118</LINE></TABLA>
+  <NO_LED_CHANGE><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>114</LINE></NO_LED_CHANGE>
+  <SUBDELAY1><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>133</LINE></SUBDELAY1>
+  <SUBDELAY2><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 2\Laboratorio 2\main.asm</FILE><LINE>137</LINE></SUBDELAY2>
+ </LABELS>
+</ASSEMBLER_INFO>

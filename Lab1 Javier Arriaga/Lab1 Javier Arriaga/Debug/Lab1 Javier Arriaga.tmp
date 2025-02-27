@@ -1,0 +1,41 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328"</DEVICE>
+ <WORKING_DIR>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\Debug\Lab1 Javier Arriaga.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Lab1 Javier Arriaga.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Lab1 Javier Arriaga.map</FILE>
+  <FILE>Lab1 Javier Arriaga.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <SETUP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>24</LINE></SETUP>
+  <LOOP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>61</LINE></LOOP>
+  <DELAY><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>137</LINE></DELAY>
+  <CHECK_DEC1><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>76</LINE></CHECK_DEC1>
+  <INCREMENTO1><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>93</LINE></INCREMENTO1>
+  <CHECK_INC2><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>81</LINE></CHECK_INC2>
+  <DECREMENTO1><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>100</LINE></DECREMENTO1>
+  <CHECK_DEC2><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>86</LINE></CHECK_DEC2>
+  <INCREMENTO2><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>107</LINE></INCREMENTO2>
+  <DECREMENTO2><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>114</LINE></DECREMENTO2>
+  <SUM_CONTADORES><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>121</LINE></SUM_CONTADORES>
+  <SIN_CARRY><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>131</LINE></SIN_CARRY>
+  <SALIR_SUM><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>134</LINE></SALIR_SUM>
+  <SUBDELAY1><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>139</LINE></SUBDELAY1>
+  <SUBDELAY2><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Lab1 Javier Arriaga\Lab1 Javier Arriaga\main.asm</FILE><LINE>144</LINE></SUBDELAY2>
+ </LABELS>
+</ASSEMBLER_INFO>

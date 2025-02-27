@@ -1,0 +1,39 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc</FILE>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\Debug\Laboratorio 3.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Laboratorio 3.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Laboratorio 3.map</FILE>
+  <FILE>Laboratorio 3.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <counter><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>13</LINE></counter>
+  <RESET><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>32</LINE></RESET>
+  <INTERRUPCION><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>171</LINE></INTERRUPCION>
+  <TIMER0_OVERFLOW><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>108</LINE></TIMER0_OVERFLOW>
+  <INIT_TMR0><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>212</LINE></INIT_TMR0>
+  <MAIN_LOOP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>86</LINE></MAIN_LOOP>
+  <DISPLAY_SEC><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>149</LINE></DISPLAY_SEC>
+  <DISPLAY_DECENA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>160</LINE></DISPLAY_DECENA>
+  <TIMER0_OVERFLOW_END><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>142</LINE></TIMER0_OVERFLOW_END>
+  <mitabla><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>222</LINE></mitabla>
+  <INCREMENT_COUNTER><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>194</LINE></INCREMENT_COUNTER>
+  <DECREMENT_COUNTER><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>203</LINE></DECREMENT_COUNTER>
+ </LABELS>
+</ASSEMBLER_INFO>
