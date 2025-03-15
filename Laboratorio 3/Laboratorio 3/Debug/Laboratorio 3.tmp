@@ -23,17 +23,17 @@
   <FILE>Laboratorio 3.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <counter><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>13</LINE></counter>
-  <RESET><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>32</LINE></RESET>
-  <INTERRUPCION><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>171</LINE></INTERRUPCION>
-  <TIMER0_OVERFLOW><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>108</LINE></TIMER0_OVERFLOW>
-  <INIT_TMR0><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>212</LINE></INIT_TMR0>
-  <MAIN_LOOP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>86</LINE></MAIN_LOOP>
-  <DISPLAY_SEC><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>149</LINE></DISPLAY_SEC>
-  <DISPLAY_DECENA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>160</LINE></DISPLAY_DECENA>
-  <TIMER0_OVERFLOW_END><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>142</LINE></TIMER0_OVERFLOW_END>
-  <mitabla><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>222</LINE></mitabla>
-  <INCREMENT_COUNTER><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>194</LINE></INCREMENT_COUNTER>
-  <DECREMENT_COUNTER><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>203</LINE></DECREMENT_COUNTER>
+  <counter><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>12</LINE></counter>
+  <SETUP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>30</LINE></SETUP>
+  <INTERRUPCION><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>184</LINE></INTERRUPCION>
+  <TIMER0_OVERFLOW><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>117</LINE></TIMER0_OVERFLOW>
+  <INIT_TMR0><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>106</LINE></INIT_TMR0>
+  <MAIN_LOOP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>84</LINE></MAIN_LOOP>
+  <DISPLAY_SEG><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>162</LINE></DISPLAY_SEG>
+  <DISPLAY_DEC><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>173</LINE></DISPLAY_DEC>
+  <TIMER0_OVERFLOW_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>151</LINE></TIMER0_OVERFLOW_FIN>
+  <TABLA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>158</LINE></TABLA>
+  <INCREMENT_COUNTER><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>207</LINE></INCREMENT_COUNTER>
+  <DECREMENT_COUNTER><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Laboratorio 3\Laboratorio 3\main.asm</FILE><LINE>216</LINE></DECREMENT_COUNTER>
  </LABELS>
 </ASSEMBLER_INFO>

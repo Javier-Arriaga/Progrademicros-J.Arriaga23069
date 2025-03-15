@@ -1,0 +1,70 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc</FILE>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\Debug\Proyecto 1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Proyecto 1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Proyecto 1.map</FILE>
+  <FILE>Proyecto 1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <USEC><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>22</LINE></USEC>
+  <DSEC><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>23</LINE></DSEC>
+  <UMIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>24</LINE></UMIN>
+  <DMIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>25</LINE></DMIN>
+  <UHORA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>26</LINE></UHORA>
+  <DHORA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>27</LINE></DHORA>
+  <UDIA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>28</LINE></UDIA>
+  <DDIA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>29</LINE></DDIA>
+  <UMES><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>30</LINE></UMES>
+  <DMES><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>31</LINE></DMES>
+  <SETUP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>82</LINE></SETUP>
+  <TIMER0_OVERFLOW><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>186</LINE></TIMER0_OVERFLOW>
+  <ISR_PCINT0><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>58</LINE></ISR_PCINT0>
+  <INCREMENTAR_CONFIG><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>285</LINE></INCREMENTAR_CONFIG>
+  <DECREMENTAR_CONFIG><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>292</LINE></DECREMENTAR_CONFIG>
+  <INIT_TMR0><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>174</LINE></INIT_TMR0>
+  <MAIN_LOOP><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>142</LINE></MAIN_LOOP>
+  <HORA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>397</LINE></HORA>
+  <CONFIG_HORA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>400</LINE></CONFIG_HORA>
+  <CONFIG_MIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>403</LINE></CONFIG_MIN>
+  <FECHA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>406</LINE></FECHA>
+  <CONFIG_DIA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>412</LINE></CONFIG_DIA>
+  <CONFIG_MES><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>409</LINE></CONFIG_MES>
+  <ALARMA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>415</LINE></ALARMA>
+  <CONFIG_ALARMA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>418</LINE></CONFIG_ALARMA>
+  <TIMER0_OVERFLOW_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>276</LINE></TIMER0_OVERFLOW_FIN>
+  <INCREMENTAR_MIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>299</LINE></INCREMENTAR_MIN>
+  <INCREMENTAR_HORA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>323</LINE></INCREMENTAR_HORA>
+  <INCREMENTAR_DIA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>347</LINE></INCREMENTAR_DIA>
+  <INCREMENTAR_MES><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>371</LINE></INCREMENTAR_MES>
+  <DECREMENTAR_MIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>311</LINE></DECREMENTAR_MIN>
+  <DECREMENTAR_HORA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>335</LINE></DECREMENTAR_HORA>
+  <DECREMENTAR_DIA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>359</LINE></DECREMENTAR_DIA>
+  <DECREMENTAR_MES><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>383</LINE></DECREMENTAR_MES>
+  <INCREMENTAR_MIN_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>308</LINE></INCREMENTAR_MIN_FIN>
+  <DECREMENTAR_MIN_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>320</LINE></DECREMENTAR_MIN_FIN>
+  <INCREMENTAR_HORA_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>332</LINE></INCREMENTAR_HORA_FIN>
+  <DECREMENTAR_HORA_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>344</LINE></DECREMENTAR_HORA_FIN>
+  <INCREMENTAR_DIA_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>356</LINE></INCREMENTAR_DIA_FIN>
+  <DECREMENTAR_DIA_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>368</LINE></DECREMENTAR_DIA_FIN>
+  <INCREMENTAR_MES_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>380</LINE></INCREMENTAR_MES_FIN>
+  <DECREMENTAR_MES_FIN><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>392</LINE></DECREMENTAR_MES_FIN>
+  <TABLA><FILE>C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm</FILE><LINE>422</LINE></TABLA>
+ </LABELS>
+</ASSEMBLER_INFO>
