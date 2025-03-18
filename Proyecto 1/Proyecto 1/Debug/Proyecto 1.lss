@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm Sat Mar 15 17:45:03 2025
+AVRASM ver. 2.2.8  C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm Mon Mar 17 23:59:55 2025
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
 C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(7): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328pdef.inc'
@@ -1036,6 +1036,8 @@ C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proy
                                  #endif  /* _M328PDEF_INC_ */
                                  
                                  ; ***** END OF FILE ******************************************************
+                                 
+                                 ; Definición de constantes
                                  .equ MODOS = 8
                                  .equ MAX_USEC = 10
                                  .equ MAX_DSEC = 6
@@ -1048,29 +1050,34 @@ C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proy
                                  .equ MAX_UMES = 10
                                  .equ MAX_DMES = 1
                                  
+                                 ; Variables en SRAM
                                  .dseg
-                                 .org	SRAM_START
-000100                           USEC:	.byte 1
-000101                           DSEC:	.byte 1
-000102                           UMIN:	.byte 1
-000103                           DMIN:	.byte 1
-000104                           UHORA:	.byte 1
-000105                           DHORA:	.byte 1
-000106                           UDIA:	.byte 1
-000107                           DDIA:	.byte 1
-000108                           UMES:	.byte 1
-000109                           DMES:	.byte 1
+                                 .org SRAM_START
+000100                           USEC:    .byte 1
+000101                           DSEC:    .byte 1
+000102                           UMIN:    .byte 1
+000103                           DMIN:    .byte 1
+000104                           UHORA:   .byte 1
+000105                           DHORA:   .byte 1
+000106                           UDIA:    .byte 1
+000107                           DDIA:    .byte 1
+000108                           UMES:    .byte 1
+000109                           DMES:    .byte 1
                                  
+                                 ; Código
                                  .cseg
                                  .org 0x0000
 000000 c02d                          rjmp START
+                                 .org PCI1addr
+000008 940c 013c                     jmp PCINT1_ISR
                                  .org OVF0addr
-000020 c067                          rjmp TIMER0_OVERFLOW  ; Interrupción por overflow del Timer0
+000020 c093                          rjmp TIMER0_OVERFLOW  ; Interrupción por overflow del Timer0
                                  
                                  ; Definición de registros para contadores
                                  .def MODO = R19
                                  .def OVERFLOW_COUNT = R18     ; Contador de overflows (para segundos)
                                  .def DISPLAY_FLAG = R17       ; Flag para alternar entre displays
+                                 
                                  
                                  ;--------------------------------------------------------------------------------------------------------------------------------------
                                  
@@ -1084,10 +1091,10 @@ C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proy
 000025 7007                          ANDI R16, 0x07       ; Aplicar máscara para obtener solo los bits de PC0-PC2
                                  
                                      ; Llamar a las funciones de configuración según el botón presionado
-000026 9b30                          SBIS PINC, PC0        ; Si se presiona PC0 (incrementar)
-000027 d09e                          RCALL INCREMENTAR_CONFIG
-000028 9b31                          SBIS PINC, PC1        ; Si se presiona PC1 (decrementar)
-000029 d0a1                          RCALL DECREMENTAR_CONFIG
+000026 9930                          SBIC PINC, PC0        ; Si se presiona PC0 (incrementar)
+000027 d123                          RCALL INCREMENTAR_CONFIG
+000028 9931                          SBIC PINC, PC1        ; Si se presiona PC1 (decrementar)
+000029 d176                          RCALL DECREMENTAR_CONFIG
                                  
                                      ; Restaurar el estado de los registros
 00002a 910f                          POP R16
@@ -1099,24 +1106,22 @@ C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proy
                                  ;--------------------------------------------------------------------------------------------------------------------------------------
                                  
                                  START:
-                                 // Configuración de pila (Stack)
+                                     ; Configuración de pila (Stack)
 00002e ef0f                          LDI R16, LOW(RAMEND)
 00002f bf0d                          OUT SPL, R16
 000030 e008                          LDI R16, HIGH(RAMEND)
 000031 bf0e                          OUT SPH, R16
                                  
-                                 
-                                 
                                  SETUP:
 000032 94f8                          CLI		; Deshabilita las interrupciones
                                  
-                                     // Configurar Prescaler "Principal"
+                                     ; Configurar Prescaler "Principal"
 000033 e800                          LDI R16, (1 << CLKPCE)
 000034 9300 0061                     STS CLKPR, R16    ; Habilitar cambio de PRESCALER
 000036 e004                          LDI R16, 0b00000100
 000037 9300 0061                     STS CLKPR, R16    ; Configurar Prescaler a 16 (1MHz)
                                  
-                                     // Configuración de los puertos
+                                     ; Configuración de los puertos
 000039 e00f                          LDI R16, 0x0F
 00003a b904                          OUT DDRB, R16         ; Configura PB0-PB3 como salidas (transistores)
 00003b e000                          LDI R16, 0x00
@@ -1132,350 +1137,619 @@ C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proy
 000043 e000                          LDI R16, 0x00
 000044 b90b                          OUT PORTD, R16        ; Apagar display
                                  
-                                     // Configuración de interrupciones
+                                     ; Configuración de interrupciones
 000045 e002                          LDI R16, (1 << PCIE1)
 000046 9300 0068                     STS PCICR, R16        ; Habilita interrupciones en el puerto C
-000048 e007                          LDI R16, (1 << PCINT8) | (1 << PCINT9) | (1 << PCINT10)
-000049 9300 006c                     STS PCMSK1, R16       ; Habilita interrupciones en PC0, PC1 y PC2
+000048 e004                          LDI R16, (1 << PCINT10) ; Habilita interrupción en PC2 (PCINT10)
+000049 9300 006c                     STS PCMSK1, R16       ; Habilita interrupciones en PC2
                                  
-                                     // Inicialización de contadores
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(111): error: Invalid register
-00004b e000                          LDI USEC, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(112): error: Invalid register
-00004c e000                          LDI DSEC, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(113): error: Invalid register
-00004d e000                          LDI UMIN, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(114): error: Invalid register
-00004e e000                          LDI DMIN, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(115): error: Invalid register
-00004f e000                          LDI UHORA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(116): error: Invalid register
-000050 e000                          LDI DHORA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(117): error: Invalid register
-000051 e000                          LDI UDIA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(118): error: Invalid register
-000052 e000                          LDI DDIA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(119): error: Invalid register
-000053 e000                          LDI UMES, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(120): error: Invalid register
-000054 e000                          LDI DMES, 0x00
-000055 e020                          LDI OVERFLOW_COUNT, 0x00
-000056 e010                          LDI DISPLAY_FLAG, 0x00
+                                     ; Inicialización de contadores
+00004b 2733                          CLR MODO              ; Inicializar MODO a 0
+00004c 2722                          CLR OVERFLOW_COUNT
+00004d e000                          LDI R16, 0x00
+00004e 9300 0100                     STS USEC, R16
+000050 9300 0101                     STS DSEC, R16
+000052 9300 0102                     STS UMIN, R16
+000054 9300 0103                     STS DMIN, R16
+000056 9300 0104                     STS UHORA, R16
+000058 9300 0105                     STS DHORA, R16
+00005a 9300 0106                     STS UDIA, R16
+00005c 9300 0107                     STS DDIA, R16
+00005e 9300 0108                     STS UMES, R16
+000060 9300 0109                     STS DMES, R16
+000062 e020                          LDI OVERFLOW_COUNT, 0x00
+000063 e010                          LDI DISPLAY_FLAG, 0x00
                                  
-                                     // Configuración del Timer0
-000057 940e 0080                     CALL INIT_TMR0
+                                     ; Configuración del Timer0
+000064 940e 00ac                     CALL INIT_TMR0
                                  
-                                 	// Configuración de interrupciones
-000059 e002                          LDI R16, (1 << PCIE1)
-00005a 9300 0068                     STS PCICR, R16        ; Habilita interrupciones en el puerto C
-00005c e007                          LDI R16, (1 << PCINT8) | (1 << PCINT9) | (1 << PCINT10)
-00005d 9300 006c                     STS PCMSK1, R16       ; Habilita interrupciones en PC0, PC1 y PC2
+000066 9478                          SEI		; Habilita interrupciones globales
                                  
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(133): error: Invalid register
-00005f 2400                      	CLR MODOS
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(134): error: Invalid register
-000060 2400                      	CLR MAX_USEC
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(135): error: Invalid register
-000061 2400                      	CLR MAX_DSEC
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(136): error: Invalid register
-000062 2400                      	CLR MAX_UMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(137): error: Invalid register
-000063 2400                      	CLR MAX_DMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(138): error: Invalid register
-000064 2400                      	CLR MAX_UHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(139): error: Invalid register
-000065 2400                      	CLR MAX_DHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(140): error: Invalid register
-000066 2400                      	CLR MAX_UDIA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(141): error: Invalid register
-000067 2400                      	CLR MAX_DDIA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(142): error: Invalid register
-000068 2400                      	CLR MAX_UMES
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(143): error: Invalid register
-000069 2400                      	CLR MAX_DMES
-                                 
-00006a 9478                          SEI		; Habilita interrupciones globales
                                  ;--------------------------------------------------------------------------------------------------------------------------------------
                                  
                                  MAIN_LOOP:
+                                     ; Verificar si ha pasado 10 ms (1 overflow)
+000067 9ba8                          SBIS TIFR0, TOV0
+000068 cffe                          RJMP MAIN_LOOP
                                  
-                                     // Verificar si ha pasado 10 ms (1 overflow)
-00006b 9ba8                          SBIS TIFR0, TOV0
-00006c cffe                          RJMP MAIN_LOOP
+                                     ; Limpiar la bandera de overflow
+000069 e001                          LDI R16, (1 << TOV0)
+00006a bb05                          OUT TIFR0, R16
                                  
-                                     // Limpiar la bandera de overflow
-00006d e001                          LDI R16, (1 << TOV0)
-00006e bb05                          OUT TIFR0, R16
-                                 
-                                 	
-                                 	//Revisar en que modo nos ubicamos
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(160): error: Invalid register
-00006f 3000                      	CPI		MODOS, 0
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(161): error: Relative branch out of reach
-000070 f139                      	BREQ	HORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(162): error: Invalid register
-000071 3000                      	CPI		MODOS, 1
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(163): error: Relative branch out of reach
-000072 f131                      	BREQ	CONFIG_HORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(164): error: Invalid register
-000073 3000                      	CPI		MODOS, 2
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(165): error: Relative branch out of reach
-000074 f129                      	BREQ	CONFIG_MIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(166): error: Invalid register
-000075 3000                      	CPI		MODOS, 3
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(167): error: Relative branch out of reach
-000076 f121                      	BREQ	FECHA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(168): error: Invalid register
-000077 3000                      	CPI		MODOS, 4
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(169): error: Relative branch out of reach
-000078 f121                      	BREQ	CONFIG_DIA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(170): error: Invalid register
-000079 3000                      	CPI		MODOS, 5
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(171): error: Relative branch out of reach
-00007a f109                      	BREQ	CONFIG_MES
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(172): error: Invalid register
-00007b 3000                      	CPI		MODOS, 6
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(173): error: Relative branch out of reach
-00007c f109                      	BREQ	ALARMA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(174): error: Invalid register
-00007d 3000                      	CPI		MODOS, 7
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(175): error: Relative branch out of reach
-00007e f101                      	BREQ	CONFIG_ALARMA
-00007f cfeb                      	RJMP	MAIN_LOOP
+                                     ; Revisar en qué modo nos ubicamos
+00006b 3030                          CPI MODO, 0
+00006c f079                          BREQ HORA
+00006d 3031                          CPI MODO, 1
+00006e f0a9                          BREQ CONFIG_HORA
+00006f 3032                          CPI MODO, 2
+000070 f0c9                          BREQ CONFIG_MIN
+000071 3033                          CPI MODO, 3
+000072 f0e9                          BREQ FECHA
+000073 3034                          CPI MODO, 4
+000074 f119                          BREQ CONFIG_DIA
+000075 3035                          CPI MODO, 5
+000076 f139                          BREQ CONFIG_MES
+000077 3036                          CPI MODO, 6
+000078 f159                          BREQ ALARMA
+000079 3037                          CPI MODO, 7
+00007a f169                          BREQ CONFIG_ALARMA
+00007b cfeb                          RJMP MAIN_LOOP
                                  
                                  ;--------------------------------------------------------------------------------------------------------------------------------------
                                  
-                                 // Inicializar el Timer0
+                                 HORA:
+00007c 9a43                          SBI PORTC, PC3
+00007d 9844                          CBI PORTC, PC4
+00007e 9845                          CBI PORTC, PC5
+00007f d16d                          RCALL MOSTRAR_UHORA
+000080 d174                          RCALL MOSTRAR_DHORA
+000081 d17b                          RCALL MOSTRAR_UMIN
+000082 d182                          RCALL MOSTRAR_DMIN
+000083 cfe3                          RJMP MAIN_LOOP
+                                 
+                                 CONFIG_HORA:
+000084 9a43                          SBI PORTC, PC3
+000085 9a44                          SBI PORTC, PC4
+000086 9845                          CBI PORTC, PC5
+000087 d165                          RCALL MOSTRAR_UHORA
+000088 d16c                          RCALL MOSTRAR_DHORA
+000089 cfdd                          RJMP MAIN_LOOP
+                                 
+                                 CONFIG_MIN:
+00008a 9a43                          SBI PORTC, PC3
+00008b 9a44                          SBI PORTC, PC4
+00008c 9a45                          SBI PORTC, PC5
+00008d d16f                          RCALL MOSTRAR_UMIN
+00008e d176                          RCALL MOSTRAR_DMIN
+00008f cfd7                          RJMP MAIN_LOOP
+                                 
+                                 FECHA:
+000090 9a44                          SBI PORTC, PC4
+000091 9843                          CBI PORTC, PC3
+000092 9845                          CBI PORTC, PC5
+000093 d179                          RCALL MOSTRAR_UDIA
+000094 d180                          RCALL MOSTRAR_DDIA
+000095 d187                          RCALL MOSTRAR_UMES
+000096 d18e                          RCALL MOSTRAR_DMES
+000097 cfcf                          RJMP MAIN_LOOP
+                                 
+                                 CONFIG_DIA:
+000098 9a43                          SBI PORTC, PC3
+000099 9a44                          SBI PORTC, PC4
+00009a 9845                          CBI PORTC, PC5
+00009b d171                          RCALL MOSTRAR_UDIA
+00009c d178                          RCALL MOSTRAR_DDIA
+00009d cfc9                          RJMP MAIN_LOOP
+                                 
+                                 CONFIG_MES:
+00009e 9a43                          SBI PORTC, PC3
+00009f 9a44                          SBI PORTC, PC4
+0000a0 9a45                          SBI PORTC, PC5
+0000a1 d17b                          RCALL MOSTRAR_UMES
+0000a2 d182                          RCALL MOSTRAR_DMES
+0000a3 cfc3                          RJMP MAIN_LOOP
+                                 
+                                 ALARMA:
+0000a4 9843                          CBI PORTC, PC3
+0000a5 9844                          CBI PORTC, PC4
+0000a6 9845                          CBI PORTC, PC5
+0000a7 cfbf                          RJMP MAIN_LOOP
+                                 
+                                 CONFIG_ALARMA:
+0000a8 9843                          CBI PORTC, PC3
+0000a9 9844                          CBI PORTC, PC4
+0000aa 9845                          CBI PORTC, PC5
+0000ab cfbb                          RJMP MAIN_LOOP
+                                 
                                  INIT_TMR0:
-000080 e003                          LDI R16, (1 << CS01) | (1 << CS00) 
-000081 bd05                          OUT TCCR0B, R16
-000082 e604                          LDI R16, 100         ; Precargar TCNT0 para overflows de 10 ms
-000083 bd06                          OUT TCNT0, R16
-000084 e001                          LDI R16, (1 << TOIE0) ; Habilitar interrupción por overflow del Timer0
-000085 9300 006e                     STS TIMSK0, R16
-000087 9508                          RET
+0000ac e003                          LDI R16, (1 << CS01) | (1 << CS00) 
+0000ad bd05                          OUT TCCR0B, R16
+0000ae e604                          LDI R16, 100         ; Precargar TCNT0 para overflows de 10 ms
+0000af bd06                          OUT TCNT0, R16
+0000b0 e001                          LDI R16, (1 << TOIE0) ; Habilitar interrupción por overflow del Timer0
+0000b1 9300 006e                     STS TIMSK0, R16
+0000b3 9508                          RET
                                  
                                  ;--------------------------------------------------------------------------------------------------------------------------------------
                                  
-                                 // Overflows
                                  TIMER0_OVERFLOW:
-000088 930f                          PUSH R16
-000089 b70f                          IN R16, SREG
-00008a 930f                          PUSH R16
+0000b4 930f                          PUSH R16
+0000b5 b70f                          IN R16, SREG
+0000b6 930f                          PUSH R16
                                  
-                                     // Recargar TCNT0 para el overflow en 10 ms
-00008b e604                          LDI R16, 100
-00008c bd06                          OUT TCNT0, R16
+                                     ; Recargar TCNT0 para el overflow en 10 ms
+0000b7 e604                          LDI R16, 100
+0000b8 bd06                          OUT TCNT0, R16
                                  
-                                     // Incrementar el contador de overflow
-00008d 9523                          INC OVERFLOW_COUNT
+                                     ; Incrementar el contador de overflow
+0000b9 9523                          INC OVERFLOW_COUNT
                                  
-                                     // Verificar si se alcanzó 1 segundo (100 overflows)
-00008e 3624                          CPI OVERFLOW_COUNT, 100
-00008f f591                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Verificar si se alcanzó 1 segundo (100 overflows)
+0000ba 3624                          CPI OVERFLOW_COUNT, 100
+0000bb f501                          BRNE TIMER0_OVERFLOW_FIN_INTERMEDIO
+0000bc c066                          RJMP TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de overflows
-000090 e020                          LDI OVERFLOW_COUNT, 0x00
+                                     ; Reiniciar contador de overflows
+0000bd e020                          LDI OVERFLOW_COUNT, 0x00
                                  
-                                     // Incrementar contador de segundos
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(213): error: Invalid register
-000091 9403                          INC USEC
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(214): error: Invalid register
-000092 3000                          CPI USEC, 10
-000093 f571                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Incrementar contador de segundos
+0000be 9100 0100                     LDS R16, USEC
+0000c0 9503                          INC R16
+0000c1 9300 0100                     STS USEC, R16
+0000c3 300a                          CPI R16, MAX_USEC
+0000c4 f4b9                          BRNE TIMER0_OVERFLOW_FIN_INTERMEDIO
+0000c5 c05d                          RJMP TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de segundos e incrementar decenas de segundos
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(218): error: Invalid register
-000094 e000                          LDI USEC, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(219): error: Invalid register
-000095 9403                          INC DSEC
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(220): error: Invalid register
-000096 3000                          CPI DSEC, 6
-000097 f551                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de segundos e incrementar decenas de segundos
+0000c6 e000                          LDI R16, 0x00
+0000c7 9300 0100                     STS USEC, R16
+0000c9 9100 0101                     LDS R16, DSEC
+0000cb 9503                          INC R16
+0000cc 9300 0101                     STS DSEC, R16
+0000ce 3006                          CPI R16, MAX_DSEC
+0000cf f461                          BRNE TIMER0_OVERFLOW_FIN_INTERMEDIO
+0000d0 c052                          RJMP TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de decenas de segundos e incrementar minutos
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(224): error: Invalid register
-000098 e000                          LDI DSEC, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(225): error: Invalid register
-000099 9403                          INC UMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(226): error: Invalid register
-00009a 3000                          CPI UMIN, 10
-00009b f531                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de decenas de segundos e incrementar minutos
+0000d1 e000                          LDI R16, 0x00
+0000d2 9300 0101                     STS DSEC, R16
+0000d4 9100 0102                     LDS R16, UMIN
+0000d6 9503                          INC R16
+0000d7 9300 0102                     STS UMIN, R16
+0000d9 300a                          CPI R16, MAX_UMIN
+0000da f409                          BRNE TIMER0_OVERFLOW_FIN_INTERMEDIO
+0000db c047                          RJMP TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de minutos e incrementar decenas de minutos
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(230): error: Invalid register
-00009c e000                          LDI UMIN, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(231): error: Invalid register
-00009d 9403                          INC DMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(232): error: Invalid register
-00009e 3000                          CPI DMIN, 6
-00009f f511                          BRNE TIMER0_OVERFLOW_FIN
+                                 TIMER0_OVERFLOW_FIN_INTERMEDIO:
+0000dc c046                          RJMP TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de decenas de minutos e incrementar horas
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(236): error: Invalid register
-0000a0 e000                          LDI DMIN, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(237): error: Invalid register
-0000a1 9403                          INC UHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(238): error: Invalid register
-0000a2 3000                          CPI UHORA, 10
-0000a3 f4f1                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de minutos e incrementar decenas de minutos
+0000dd e000                          LDI R16, 0x00
+0000de 9300 0102                     STS UMIN, R16
+0000e0 9100 0103                     LDS R16, DMIN
+0000e2 9503                          INC R16
+0000e3 9300 0103                     STS DMIN, R16
+0000e5 3006                          CPI R16, MAX_DMIN
+0000e6 f5e1                          BRNE TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de horas e incrementar decenas de horas
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(242): error: Invalid register
-0000a4 e000                          LDI UHORA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(243): error: Invalid register
-0000a5 9403                          INC DHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(244): error: Invalid register
-0000a6 3000                          CPI DHORA, 2
-0000a7 f4d1                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de decenas de minutos e incrementar horas
+0000e7 e000                          LDI R16, 0x00
+0000e8 9300 0103                     STS DMIN, R16
+0000ea 9100 0104                     LDS R16, UHORA
+0000ec 9503                          INC R16
+0000ed 9300 0104                     STS UHORA, R16
+0000ef 300a                          CPI R16, MAX_UHORA
+0000f0 f591                          BRNE TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de decenas de horas e incrementar días
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(248): error: Invalid register
-0000a8 e000                          LDI DHORA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(249): error: Invalid register
-0000a9 9403                          INC UDIA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(250): error: Invalid register
-0000aa 3000                          CPI UDIA, 10
-0000ab f4b1                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de horas e incrementar decenas de horas
+0000f1 e000                          LDI R16, 0x00
+0000f2 9300 0104                     STS UHORA, R16
+0000f4 9100 0105                     LDS R16, DHORA
+0000f6 9503                          INC R16
+0000f7 9300 0105                     STS DHORA, R16
+0000f9 3002                          CPI R16, MAX_DHORA
+0000fa f541                          BRNE TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de días e incrementar decenas de días
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(254): error: Invalid register
-0000ac e000                          LDI UDIA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(255): error: Invalid register
-0000ad 9403                          INC DDIA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(256): error: Invalid register
-0000ae 3000                          CPI DDIA, 3
-0000af f491                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de decenas de horas e incrementar días
+0000fb e000                          LDI R16, 0x00
+0000fc 9300 0105                     STS DHORA, R16
+0000fe 9100 0106                     LDS R16, UDIA
+000100 9503                          INC R16
+000101 9300 0106                     STS UDIA, R16
+000103 300a                          CPI R16, MAX_UDIA
+000104 f4f1                          BRNE TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de decenas de días e incrementar meses
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(260): error: Invalid register
-0000b0 e000                          LDI DDIA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(261): error: Invalid register
-0000b1 9403                          INC UMES
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(262): error: Invalid register
-0000b2 3000                          CPI UMES, 10
-0000b3 f471                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de días e incrementar decenas de días
+000105 e000                          LDI R16, 0x00
+000106 9300 0106                     STS UDIA, R16
+000108 9100 0107                     LDS R16, DDIA
+00010a 9503                          INC R16
+00010b 9300 0107                     STS DDIA, R16
+00010d 3003                          CPI R16, MAX_DDIA
+00010e f4a1                          BRNE TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar contador de meses e incrementar decenas de meses
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(266): error: Invalid register
-0000b4 e000                          LDI UMES, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(267): error: Invalid register
-0000b5 9403                          INC DMES
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(268): error: Invalid register
-0000b6 3000                          CPI DMES, 1
-0000b7 f451                          BRNE TIMER0_OVERFLOW_FIN
+                                     ; Reiniciar contador de decenas de días e incrementar meses
+00010f e000                          LDI R16, 0x00
+000110 9300 0107                     STS DDIA, R16
+000112 9100 0108                     LDS R16, UMES
+000114 9503                          INC R16
+000115 9300 0108                     STS UMES, R16
+000117 300a                          CPI R16, MAX_UMES
+000118 f451                          BRNE TIMER0_OVERFLOW_FIN
                                  
-                                     // Reiniciar todos los contadores si se alcanza el límite máximo
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(272): error: Invalid register
-0000b8 e000                          LDI USEC, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(273): error: Invalid register
-0000b9 e000                          LDI DSEC, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(274): error: Invalid register
-0000ba e000                          LDI UMIN, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(275): error: Invalid register
-0000bb e000                          LDI DMIN, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(276): error: Invalid register
-0000bc e000                          LDI UHORA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(277): error: Invalid register
-0000bd e000                          LDI DHORA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(278): error: Invalid register
-0000be e000                          LDI UDIA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(279): error: Invalid register
-0000bf e000                          LDI DDIA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(280): error: Invalid register
-0000c0 e000                          LDI UMES, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(281): error: Invalid register
-0000c1 e000                          LDI DMES, 0x00
+                                     ; Reiniciar contador de meses e incrementar decenas de meses
+000119 e000                          LDI R16, 0x00
+00011a 9300 0108                     STS UMES, R16
+00011c 9100 0109                     LDS R16, DMES
+00011e 9503                          INC R16
+00011f 9300 0109                     STS DMES, R16
+000121 3001                          CPI R16, MAX_DMES
+000122 f401                          BRNE TIMER0_OVERFLOW_FIN
                                  
                                  TIMER0_OVERFLOW_FIN:
-0000c2 910f                          POP R16
-0000c3 bf0f                          OUT SREG, R16
-0000c4 910f                          POP R16
-0000c5 9518                          RETI
+000123 910f                          POP R16
+000124 bf0f                          OUT SREG, R16
+000125 910f                          POP R16
+000126 9518                          RETI
+                                 
+                                     ; Reiniciar todos los contadores si se alcanza el límite máximo
+000127 e000                          LDI R16, 0x00
+000128 9300 0100                     STS USEC, R16
+00012a 9300 0101                     STS DSEC, R16
+00012c 9300 0102                     STS UMIN, R16
+00012e 9300 0103                     STS DMIN, R16
+000130 9300 0104                     STS UHORA, R16
+000132 9300 0105                     STS DHORA, R16
+000134 9300 0106                     STS UDIA, R16
+000136 9300 0107                     STS DDIA, R16
+000138 9300 0108                     STS UMES, R16
+00013a 9300 0109                     STS DMES, R16
                                  
                                  ;--------------------------------------------------------------------------------------------------------------------------------------
+                                 ; Rutina de interrupción para PCINT1 (botón en PC2)
+                                 PCINT1_ISR:
+00013c 930f                          PUSH R16
+00013d b70f                          IN R16, SREG
+00013e 930f                          PUSH R16
                                  
-                                 // Funciones de incremento y decremento con overflow y underflow
+                                     ; Debounce: Esperar un poco para evitar rebotes
+00013f d0f8                          RCALL DELAY_DEBOUNCE
+                                 
+                                     ; Verificar si el botón en PC2 fue presionado
+000140 9932                          SBIC PINC, PC2        ; Si se presiona PC2 (cambio de modo)
+000141 d004                          RCALL CAMBIAR_MODO    ; Llamar a la función para cambiar el modo
+                                 
+                                     ; Restaurar el estado de los registros
+000142 910f                          POP R16
+000143 bf0f                          OUT SREG, R16
+000144 910f                          POP R16
+                                 
+000145 9518                          RETI                  ; Retornar de la interrupción
+                                 
+                                 ;--------------------------------------------------------------------------------------------------------------------------------------
+                                 ; Función para cambiar el modo
+                                 CAMBIAR_MODO:
+000146 9533                          INC MODO             ; Incrementar el modo en 1
+000147 3038                          CPI MODO, MODOS      ; Verificar si el modo supera el límite
+000148 f008                          BRLO CAMBIAR_MODO_FIN ; Si no, continuar
+000149 e030                          LDI MODO, 0          ; Si supera el límite, reiniciar a 0
+                                 CAMBIAR_MODO_FIN:
+00014a 9508                          RET                  ; Retornar
+                                 
+                                 ;--------------------------------------------------------------------------------------------------------------------------------------
                                  INCREMENTAR_CONFIG:
-0000c6 d009                          RCALL INCREMENTAR_MIN
-0000c7 d01a                          RCALL INCREMENTAR_HORA
-0000c8 d02b                          RCALL INCREMENTAR_DIA
-0000c9 d03c                          RCALL INCREMENTAR_MES
-0000ca 9508                          RET
+00014b 3031                          CPI MODO, 1
+00014c f0d1                          BREQ INCREMENTAR_HORA
+00014d 3032                          CPI MODO, 2
+00014e f029                          BREQ INCREMENTAR_MIN
+00014f 3034                          CPI MODO, 4
+000150 f149                          BREQ INCREMENTAR_DIA
+000151 3035                          CPI MODO, 5
+000152 f1d1                          BREQ INCREMENTAR_MES
+000153 9508                          RET
                                  
-                                 DECREMENTAR_CONFIG:
-0000cb d00d                          RCALL DECREMENTAR_MIN
-0000cc d01e                          RCALL DECREMENTAR_HORA
-0000cd d02f                          RCALL DECREMENTAR_DIA
-0000ce d040                          RCALL DECREMENTAR_MES
-0000cf 9508                          RET
-                                 //---------------------------------------------------------------------------------
                                  INCREMENTAR_MIN:
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(307): error: Invalid register
-0000d0 9403                          INC UMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(308): error: Invalid register
-0000d1 3000                          CPI UMIN, 10
-0000d2 f429                          BRNE INCREMENTAR_MIN_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(310): error: Invalid register
-0000d3 e000                          LDI UMIN, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(311): error: Invalid register
-0000d4 9403                          INC DMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(312): error: Invalid register
-0000d5 3000                          CPI DMIN, 6
-0000d6 f409                          BRNE INCREMENTAR_MIN_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(314): error: Invalid register
-0000d7 e000                          LDI DMIN, 0x00
+000154 9100 0102                     LDS R16, UMIN
+000156 9503                          INC R16
+000157 300a                          CPI R16, MAX_UMIN
+000158 f459                          BRNE INCREMENTAR_MIN_FIN
+000159 e000                          LDI R16, 0x00
+00015a 9110 0103                     LDS R17, DMIN
+00015c 9513                          INC R17
+00015d 9310 0103                     STS DMIN, R17
+00015f 3016                          CPI R17, MAX_DMIN
+000160 f419                          BRNE INCREMENTAR_MIN_FIN
+000161 e010                          LDI R17, 0x00
+000162 9310 0103                     STS DMIN, R17
                                  INCREMENTAR_MIN_FIN:
-0000d8 9508                          RET
-                                 
-                                 DECREMENTAR_MIN:
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(319): error: Invalid register
-0000d9 940a                          DEC UMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(320): error: Invalid register
-0000da 3000                          CPI UMIN, 0xFF
-0000db f429                          BRNE DECREMENTAR_MIN_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(322): error: Invalid register
-0000dc e000                          LDI UMIN, 0x09
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(323): error: Invalid register
-0000dd 940a                          DEC DMIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(324): error: Invalid register
-0000de 3000                          CPI DMIN, 0xFF
-0000df f409                          BRNE DECREMENTAR_MIN_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(326): error: Invalid register
-0000e0 e000                          LDI DMIN, 0x05
-                                 DECREMENTAR_MIN_FIN:
-0000e1 9508                          RET
+000164 9300 0102                     STS UMIN, R16
+000166 9508                          RET
                                  
                                  INCREMENTAR_HORA:
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(331): error: Invalid register
-0000e2 9403                          INC UHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(332): error: Invalid register
-0000e3 3000                          CPI UHORA, 10
-0000e4 f429                          BRNE INCREMENTAR_HORA_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(334): error: Invalid register
-0000e5 e000                          LDI UHORA, 0x00
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(335): error: Invalid register
-0000e6 9403                          INC DHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(336): error: Invalid register
-0000e7 3000                          CPI DHORA, 2
-0000e8 f409                          BRNE INCREMENTAR_HORA_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(338): error: Invalid register
-0000e9 e000                          LDI DHORA, 0x00
+000167 9100 0104                     LDS R16, UHORA
+000169 9503                          INC R16
+00016a 300a                          CPI R16, MAX_UHORA
+00016b f459                          BRNE INCREMENTAR_HORA_FIN
+00016c e000                          LDI R16, 0x00
+00016d 9110 0105                     LDS R17, DHORA
+00016f 9513                          INC R17
+000170 9310 0105                     STS DHORA, R17
+000172 3012                          CPI R17, MAX_DHORA
+000173 f419                          BRNE INCREMENTAR_HORA_FIN
+000174 e010                          LDI R17, 0x00
+000175 9310 0105                     STS DHORA, R17
                                  INCREMENTAR_HORA_FIN:
-0000ea 9508                          RET
+000177 9300 0104                     STS UHORA, R16
+000179 9508                          RET
+                                 
+                                 INCREMENTAR_DIA:
+00017a 9100 0106                     LDS R16, UDIA
+00017c 9503                          INC R16
+00017d 300a                          CPI R16, MAX_UDIA
+00017e f459                          BRNE INCREMENTAR_DIA_FIN
+00017f e000                          LDI R16, 0x00
+000180 9110 0107                     LDS R17, DDIA
+000182 9513                          INC R17
+000183 9310 0107                     STS DDIA, R17
+000185 3013                          CPI R17, MAX_DDIA
+000186 f419                          BRNE INCREMENTAR_DIA_FIN
+000187 e010                          LDI R17, 0x00
+000188 9310 0107                     STS DDIA, R17
+                                 INCREMENTAR_DIA_FIN:
+00018a 9300 0106                     STS UDIA, R16
+00018c 9508                          RET
+                                 
+                                 INCREMENTAR_MES:
+00018d 9100 0108                     LDS R16, UMES
+00018f 9503                          INC R16
+000190 300a                          CPI R16, MAX_UMES
+000191 f459                          BRNE INCREMENTAR_MES_FIN
+000192 e000                          LDI R16, 0x00
+000193 9110 0109                     LDS R17, DMES
+000195 9513                          INC R17
+000196 9310 0109                     STS DMES, R17
+000198 3011                          CPI R17, MAX_DMES
+000199 f419                          BRNE INCREMENTAR_MES_FIN
+00019a e010                          LDI R17, 0x00
+00019b 9310 0109                     STS DMES, R17
+                                 INCREMENTAR_MES_FIN:
+00019d 9300 0108                     STS UMES, R16
+00019f 9508                          RET
+                                 
+                                 DECREMENTAR_CONFIG:
+0001a0 3031                          CPI MODO, 1
+0001a1 f0c1                          BREQ DECREMENTAR_HORA
+0001a2 3032                          CPI MODO, 2
+0001a3 f029                          BREQ DECREMENTAR_MIN
+0001a4 3034                          CPI MODO, 4
+0001a5 f129                          BREQ DECREMENTAR_DIA
+0001a6 3035                          CPI MODO, 5
+0001a7 f1a1                          BREQ DECREMENTAR_MES
+0001a8 9508                          RET
+                                 
+                                 DECREMENTAR_MIN:
+0001a9 9100 0102                     LDS R16, UMIN
+0001ab 950a                          DEC R16
+0001ac 3f0f                          CPI R16, 0xFF
+0001ad f449                          BRNE DECREMENTAR_MIN_FIN
+0001ae e009                          LDI R16, 0x09
+0001af 9110 0103                     LDS R17, DMIN
+0001b1 951a                          DEC R17
+0001b2 3f1f                          CPI R17, 0xFF
+0001b3 f419                          BRNE DECREMENTAR_MIN_FIN
+0001b4 e015                          LDI R17, 0x05
+0001b5 9310 0103                     STS DMIN, R17
+                                 DECREMENTAR_MIN_FIN:
+0001b7 9300 0102                     STS UMIN, R16
+0001b9 9508                          RET
                                  
                                  DECREMENTAR_HORA:
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(343): error: Invalid register
-0000eb 940a                          DEC UHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(344): error: Invalid register
-0000ec 3000                          CPI UHORA, 0xFF
-0000ed f429                          BRNE DECREMENTAR_HORA_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(346): error: Invalid register
-0000ee e000                          LDI UHORA, 0x09
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(347): error: Invalid register
-0000ef 940a                          DEC DHORA
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(348): error: Invalid register
-0000f0 3000                          CPI DHORA, 0xFF
-0000f1 f409                          BRNE DECREMENTAR_HORA_FIN
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(350): error: Invalid register
-C:\Users\Javie\OneDrive\Escritorio\Progrademicros-J.Arriaga23069\Proyecto 1\Proyecto 1\main.asm(350): FATAL: Giving up after 100 errors
+0001ba 9100 0104                     LDS R16, UHORA
+0001bc 950a                          DEC R16
+0001bd 3f0f                          CPI R16, 0xFF
+0001be f449                          BRNE DECREMENTAR_HORA_FIN
+0001bf e009                          LDI R16, 0x09
+0001c0 9110 0105                     LDS R17, DHORA
+0001c2 951a                          DEC R17
+0001c3 3f1f                          CPI R17, 0xFF
+0001c4 f419                          BRNE DECREMENTAR_HORA_FIN
+0001c5 e011                          LDI R17, 0x01
+0001c6 9310 0105                     STS DHORA, R17
+                                 DECREMENTAR_HORA_FIN:
+0001c8 9300 0104                     STS UHORA, R16
+0001ca 9508                          RET
+                                 
+                                 DECREMENTAR_DIA:
+0001cb 9100 0106                     LDS R16, UDIA
+0001cd 950a                          DEC R16
+0001ce 3f0f                          CPI R16, 0xFF
+0001cf f449                          BRNE DECREMENTAR_DIA_FIN
+0001d0 e009                          LDI R16, 0x09
+0001d1 9110 0107                     LDS R17, DDIA
+0001d3 951a                          DEC R17
+0001d4 3f1f                          CPI R17, 0xFF
+0001d5 f419                          BRNE DECREMENTAR_DIA_FIN
+0001d6 e012                          LDI R17, 0x02
+0001d7 9310 0107                     STS DDIA, R17
+                                 DECREMENTAR_DIA_FIN:
+0001d9 9300 0106                     STS UDIA, R16
+0001db 9508                          RET
+                                 
+                                 DECREMENTAR_MES:
+0001dc 9100 0108                     LDS R16, UMES
+0001de 950a                          DEC R16
+0001df 3f0f                          CPI R16, 0xFF
+0001e0 f449                          BRNE DECREMENTAR_MES_FIN
+0001e1 e009                          LDI R16, 0x09
+0001e2 9110 0109                     LDS R17, DMES
+0001e4 951a                          DEC R17
+0001e5 3f1f                          CPI R17, 0xFF
+0001e6 f419                          BRNE DECREMENTAR_MES_FIN
+0001e7 e010                          LDI R17, 0x00
+0001e8 9310 0109                     STS DMES, R17
+                                 DECREMENTAR_MES_FIN:
+0001ea 9300 0108                     STS UMES, R16
+0001ec 9508                          RET
+                                 
+                                 ;---------------------------------------------------------------------------------------------------------------------
+                                 
+                                 MOSTRAR_UHORA:
+0001ed 982a                          CBI     PORTB, PB2    ; Apagar display de decenas de horas
+0001ee 982b                          CBI     PORTB, PB3    ; Apagar display de unidades de horas
+0001ef 9100 0104                     LDS     R16, UHORA    ; Cargar valor de unidades de horas
+0001f1 d03b                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+0001f2 9a2a                          SBI     PORTB, PB2    ; Encender display de unidades de horas
+0001f3 d040                          RCALL   DELAY         ; Pequeño retardo
+0001f4 9508                          RET
+                                 
+                                 MOSTRAR_DHORA:
+0001f5 982a                          CBI     PORTB, PB2    ; Apagar display de unidades de horas
+0001f6 982b                          CBI     PORTB, PB3    ; Apagar display de decenas de horas
+0001f7 9100 0105                     LDS     R16, DHORA    ; Cargar valor de decenas de horas
+0001f9 d033                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+0001fa 9a2b                          SBI     PORTB, PB3    ; Encender display de decenas de horas
+0001fb d038                          RCALL   DELAY         ; Pequeño retardo
+0001fc 9508                          RET
+                                 
+                                 MOSTRAR_UMIN:
+0001fd 9828                          CBI     PORTB, PB0    ; Apagar display de decenas de minutos
+0001fe 9829                          CBI     PORTB, PB1    ; Apagar display de unidades de minutos
+0001ff 9100 0102                     LDS     R16, UMIN     ; Cargar valor de unidades de minutos
+000201 d02b                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+000202 9a28                          SBI     PORTB, PB0    ; Encender display de unidades de minutos
+000203 d030                          RCALL   DELAY         ; Pequeño retardo
+000204 9508                          RET
+                                 
+                                 MOSTRAR_DMIN:
+000205 9828                          CBI     PORTB, PB0    ; Apagar display de unidades de minutos
+000206 9829                          CBI     PORTB, PB1    ; Apagar display de decenas de minutos
+000207 9100 0103                     LDS     R16, DMIN     ; Cargar valor de decenas de minutos
+000209 d023                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+00020a 9a29                          SBI     PORTB, PB1    ; Encender display de decenas de minutos
+00020b d028                          RCALL   DELAY         ; Pequeño retardo
+00020c 9508                          RET
+                                 
+                                 MOSTRAR_UDIA:
+00020d 982a                          CBI     PORTB, PB2    ; Apagar display de decenas de días
+00020e 982b                          CBI     PORTB, PB3    ; Apagar display de unidades de días
+00020f 9100 0106                     LDS     R16, UDIA     ; Cargar valor de unidades de días
+000211 d01b                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+000212 9a2a                          SBI     PORTB, PB2    ; Encender display de unidades de días
+000213 d020                          RCALL   DELAY         ; Pequeño retardo
+000214 9508                          RET
+                                 
+                                 MOSTRAR_DDIA:
+000215 982a                          CBI     PORTB, PB2    ; Apagar display de unidades de días
+000216 982b                          CBI     PORTB, PB3    ; Apagar display de decenas de días
+000217 9100 0107                     LDS     R16, DDIA     ; Cargar valor de decenas de días
+000219 d013                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+00021a 9a2b                          SBI     PORTB, PB3    ; Encender display de decenas de días
+00021b d018                          RCALL   DELAY         ; Pequeño retardo
+00021c 9508                          RET
+                                 
+                                 MOSTRAR_UMES:
+00021d 9828                          CBI     PORTB, PB0    ; Apagar display de decenas de meses
+00021e 9829                          CBI     PORTB, PB1    ; Apagar display de unidades de meses
+00021f 9100 0108                     LDS     R16, UMES     ; Cargar valor de unidades de meses
+000221 d00b                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+000222 9a28                          SBI     PORTB, PB0    ; Encender display de unidades de meses
+000223 d010                          RCALL   DELAY         ; Pequeño retardo
+000224 9508                          RET
+                                 
+                                 MOSTRAR_DMES:
+000225 9828                          CBI     PORTB, PB0    ; Apagar display de unidades de meses
+000226 9829                          CBI     PORTB, PB1    ; Apagar display de decenas de meses
+000227 9100 0109                     LDS     R16, DMES     ; Cargar valor de decenas de meses
+000229 d003                          RCALL   MOSTRAR_DIGITO ; Mostrar dígito en el display
+00022a 9a29                          SBI     PORTB, PB1    ; Encender display de decenas de meses
+00022b d008                          RCALL   DELAY         ; Pequeño retardo
+00022c 9508                          RET
+                                 
+                                 ;---------------------------------------------------------------------------------------------------------------------
+                                 
+                                 MOSTRAR_DIGITO:
+00022d e7e8                          LDI     ZL, LOW(TABLA << 1)  ; Cargar dirección baja de la tabla de segmentos
+00022e e0f4                          LDI     ZH, HIGH(TABLA << 1) ; Cargar dirección alta de la tabla de segmentos
+00022f 0fe0                          ADD     ZL, R16              ; Sumar el valor del dígito a la dirección de la tabla
+000230 1df1                          ADC     ZH, R1               ; Añadir el acarreo si es necesario
+000231 9104                          LPM     R16, Z               ; Cargar el patrón de segmentos desde la tabla
+000232 b90b                          OUT     PORTD, R16           ; Mostrar el patrón en el display
+000233 9508                          RET
+                                 
+                                 ;---------------------------------------------------------------------------------------------------------------------
+                                 
+                                 DELAY:
+000234 e342                          LDI     R20, 50              ; Cargar valor para el retardo
+                                 DELAY_LOOP:
+000235 954a                          DEC     R20                  ; Decrementar el contador
+000236 f7f1                          BRNE    DELAY_LOOP           ; Repetir hasta que el contador sea cero
+000237 9508                          RET
+                                 
+                                 DELAY_DEBOUNCE:
+000238 e644                          LDI     R20, 100             ; Cargar valor para el retardo de debounce
+                                 DELAY_DEBOUNCE_LOOP:
+000239 954a                          DEC     R20
+00023a f7f1                          BRNE    DELAY_DEBOUNCE_LOOP
+00023b 9508                          RET
+                                 
+                                 ;---------------------------------------------------------------------------------------------------------------------
+                                 
+                                 TABLA:
+00023c 063f
+00023d 4f5b
+00023e 6d66
+00023f 077d
+
+
+RESOURCE USE INFORMATION
+------------------------
+
+Notice:
+The register and instruction counts are symbol table hit counts,
+and hence implicitly used resources are not counted, eg, the
+'lpm' instruction without operands implicitly uses r0 and z,
+none of which are counted.
+
+x,y,z are separate entities in the symbol table and are
+counted separately from r26..r31 here.
+
+.dseg memory usage only counts static data declared with .byte
+
+"ATmega328P" register use summary:
+x  :   0 y  :   0 z  :   1 r0 :   0 r1 :   1 r2 :   0 r3 :   0 r4 :   0 
+r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
+r13:   0 r14:   0 r15:   0 r16: 185 r17:  45 r18:   5 r19:  20 r20:   4 
+r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r29:   0 r30:   2 r31:   2 
+Registers used: 9 out of 35 (25.7%)
+
+"ATmega328P" instruction use summary:
+.lds  :   0 .sts  :   0 adc   :   1 add   :   1 adiw  :   0 and   :   0 
+andi  :   1 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :  16 brge  :   0 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   1 brlt  :   0 brmi  :   0 
+brne  :  29 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   1 cbi   :  28 cbr   :   0 
+clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :   2 cls   :   0 
+clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
+cpi   :  44 cpse  :   0 dec   :  10 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   4 inc   :  20 jmp   :   1 
+ld    :   0 ldd   :   0 ldi   :  52 lds   :  34 lpm   :   2 lsl   :   0 
+lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  16 pop   :   6 
+push  :   6 rcall :  36 ret   :  23 reti  :   3 rjmp  :  17 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :  20 sbic  :   3 sbis  :   1 
+sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
+sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
+sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :  64 
+sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
+Instructions used: 30 out of 113 (26.5%)
+
+"ATmega328P" memory use summary [bytes]:
+Segment   Begin    End      Code   Data   Used    Size   Use%
+---------------------------------------------------------------
+[.cseg] 0x000000 0x000482   1086     10   1096   32768   3.3%
+[.dseg] 0x000100 0x00010a      0     10     10    2048   0.5%
+[.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
+
+Assembly complete, 0 errors, 0 warnings
