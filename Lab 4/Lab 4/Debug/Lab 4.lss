@@ -98,14 +98,14 @@ void setup(void) {
   92:	8a b9       	out	0x0a, r24	; 10
 	
 	// Configure buttons as inputs with pull-ups
-	DDRC &= ~((1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON));
-  94:	87 b1       	in	r24, 0x07	; 7
+	DDRB &= ~((1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON));
+  94:	84 b1       	in	r24, 0x04	; 4
   96:	8c 7f       	andi	r24, 0xFC	; 252
-  98:	87 b9       	out	0x07, r24	; 7
-	PORTC |= (1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON);
-  9a:	88 b1       	in	r24, 0x08	; 8
+  98:	84 b9       	out	0x04, r24	; 4
+	PORTB |= (1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON);
+  9a:	85 b1       	in	r24, 0x05	; 5
   9c:	83 60       	ori	r24, 0x03	; 3
-  9e:	88 b9       	out	0x08, r24	; 8
+  9e:	85 b9       	out	0x05, r24	; 5
 	
 	// Initialize counter to 0
 	counter = 0;
@@ -119,8 +119,8 @@ void setup(void) {
 }
 
 uint8_t debounce(uint8_t pin) {
-	if (!(PINC & (1 << pin))) { // If button is pressed (LOW)
-  ac:	26 b1       	in	r18, 0x06	; 6
+	if (!(PINB & (1 << pin))) { // If button is pressed (LOW)
+  ac:	23 b1       	in	r18, 0x03	; 3
   ae:	30 e0       	ldi	r19, 0x00	; 0
   b0:	08 2e       	mov	r0, r24
   b2:	02 c0       	rjmp	.+4      	; 0xb8 <debounce+0xc>
@@ -143,8 +143,8 @@ uint8_t debounce(uint8_t pin) {
   c8:	00 c0       	rjmp	.+0      	; 0xca <debounce+0x1e>
   ca:	00 00       	nop
 		_delay_ms(DEBOUNCE_DELAY);
-		if (!(PINC & (1 << pin))) { // Verify after delay
-  cc:	26 b1       	in	r18, 0x06	; 6
+		if (!(PINB & (1 << pin))) { // Verify after delay
+  cc:	23 b1       	in	r18, 0x03	; 3
   ce:	30 e0       	ldi	r19, 0x00	; 0
   d0:	a9 01       	movw	r20, r18
   d2:	02 c0       	rjmp	.+4      	; 0xd8 <debounce+0x2c>
@@ -189,8 +189,8 @@ int main(void) {
 			PORTD = counter;
  104:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  108:	8b b9       	out	0x0b, r24	; 11
-			while (!(PINC & (1 << INCREMENT_BUTTON))); // Wait for button release
- 10a:	30 9b       	sbis	0x06, 0	; 6
+			while (!(PINB & (1 << INCREMENT_BUTTON))); // Wait for button release
+ 10a:	18 9b       	sbis	0x03, 0	; 3
  10c:	fe cf       	rjmp	.-4      	; 0x10a <main+0x1e>
 		}
 		
@@ -207,8 +207,8 @@ int main(void) {
 			PORTD = counter;
  122:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  126:	8b b9       	out	0x0b, r24	; 11
-			while (!(PINC & (1 << DECREMENT_BUTTON))); // Wait for button release
- 128:	31 9b       	sbis	0x06, 1	; 6
+			while (!(PINB & (1 << DECREMENT_BUTTON))); // Wait for button release
+ 128:	19 9b       	sbis	0x03, 1	; 3
  12a:	fe cf       	rjmp	.-4      	; 0x128 <main+0x3c>
  12c:	e1 cf       	rjmp	.-62     	; 0xf0 <main+0x4>
 

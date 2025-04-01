@@ -14,8 +14,8 @@
 /****************************************/
 // Defines and Constants
 #define DEBOUNCE_DELAY 50 // ms
-#define INCREMENT_BUTTON PC0
-#define DECREMENT_BUTTON PC1
+#define INCREMENT_BUTTON PB0
+#define DECREMENT_BUTTON PB1
 
 /****************************************/
 // Global Variables
@@ -36,14 +36,14 @@ int main(void) {
 		if (debounce(INCREMENT_BUTTON)) {
 			counter++;
 			PORTD = counter;
-			while (!(PINC & (1 << INCREMENT_BUTTON))); // Wait for button release
+			while (!(PINB & (1 << INCREMENT_BUTTON))); // Wait for button release
 		}
 		
 		// Decrement counter if decrement button pressed
 		if (debounce(DECREMENT_BUTTON)) {
 			counter--;
 			PORTD = counter;
-			while (!(PINC & (1 << DECREMENT_BUTTON))); // Wait for button release
+			while (!(PINB & (1 << DECREMENT_BUTTON))); // Wait for button release
 		}
 	}
 	
@@ -57,8 +57,8 @@ void setup(void) {
 	DDRD = 0xFF;
 	
 	// Configure buttons as inputs with pull-ups
-	DDRC &= ~((1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON));
-	PORTC |= (1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON);
+	DDRB &= ~((1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON));
+	PORTB |= (1 << INCREMENT_BUTTON) | (1 << DECREMENT_BUTTON);
 	
 	// Initialize counter to 0
 	counter = 0;
@@ -66,9 +66,9 @@ void setup(void) {
 }
 
 uint8_t debounce(uint8_t pin) {
-	if (!(PINC & (1 << pin))) { // If button is pressed (LOW)
+	if (!(PINB & (1 << pin))) { // If button is pressed (LOW)
 		_delay_ms(DEBOUNCE_DELAY);
-		if (!(PINC & (1 << pin))) { // Verify after delay
+		if (!(PINB & (1 << pin))) { // Verify after delay
 			return 1; // Button truly pressed
 		}
 	}
