@@ -17,6 +17,6 @@ void PWM_init() {
 
 void PWM_setAngle(uint8_t angle) {
 	// Mapear 0-180° a 1-2 ms ? 2000 a 4000 ticks (0.5 us cada tick)
-	uint16_t ticks = 2000 + (angle * 11); // 11 = (2000/180)
+	uint16_t ticks = 4000 + (angle * 11); // 11 = (2000/180)
 	OCR1A = ticks;
 }
