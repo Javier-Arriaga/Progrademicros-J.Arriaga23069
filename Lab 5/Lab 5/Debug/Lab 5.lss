@@ -313,7 +313,7 @@ void PWMManual_init() {
 	TCCR0B = (1 << CS01) | (1 << CS00); // Prescaler 64
  1d2:	83 e0       	ldi	r24, 0x03	; 3
  1d4:	85 bd       	out	0x25, r24	; 37
-	OCR0A = 25; // 25 ticks = 0.1 ms 100 Hz PWM con count hasta 100
+	OCR0A = 25; 
  1d6:	89 e1       	ldi	r24, 0x19	; 25
  1d8:	87 bd       	out	0x27, r24	; 39
 

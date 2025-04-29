@@ -15,7 +15,7 @@ void PWMManual_init() {
 
 	TCCR0A = (1 << WGM01); // Modo CTC
 	TCCR0B = (1 << CS01) | (1 << CS00); // Prescaler 64
-	OCR0A = 25; // 25 ticks = 0.1 ms 100 Hz PWM con count hasta 100
+	OCR0A = 25; 
 
 	TIMSK0 |= (1 << OCIE0A); // Habilita interrupción
 	sei();
