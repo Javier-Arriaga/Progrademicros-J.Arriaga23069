@@ -140,9 +140,6 @@ int main(void) {
 
 	while (1) {
 		Revisarboton();
-
-		// Ya no leemos UDR0 aquí porque se hace en la ISR
-		// Solo cambiamos de modo si 'valor' se activó y estamos fuera de UART_MODE
 		if (valor && current_mode != UART_MODE) {
 			switch (caracter) {
 				case '1': current_mode = MANUAL; break;
